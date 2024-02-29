@@ -33,9 +33,12 @@ def get_todos():
       completed = completed.lower() == 'true'
       query = query.filter_by(completed=completed)
 
-   if window is not None:
+   if window is not None: 
+      # extract no. of days
       days = int(window)
+      # get the current utc time
       now = datetime.utcnow()
+      # get all todos with a deadline between now and the extracted no. of days
       query = query.filter(Todo.deadline_at <= now + timedelta(days=days))
 
    todos = query.all()
