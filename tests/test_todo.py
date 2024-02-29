@@ -92,6 +92,7 @@ class TestTodo(TodoTest):
 
         response = self.client.get('/api/v1/todos?completed=true')
         self.assertEqual(response.status_code, 200)
+        
         self.assertEqual(len(response.json), 1)
         self.assertDictSubset(TODO_1, response.json[0])
 
@@ -100,6 +101,10 @@ class TestTodo(TodoTest):
 
         response = self.client.get('/api/v1/todos?window=5')
         self.assertEqual(response.status_code, 200)
+
+        for msg in response.json:
+            print(msg)
+
         self.assertEqual(len(response.json), 3)
         self.assertDictSubset(TODO_1, response.json[0])
         self.assertDictSubset(TODO_2, response.json[1])
@@ -158,7 +163,7 @@ class TestTodo(TodoTest):
 
     def test_put_item_extra_field(self):
         self._populate_records([TODO_1])
-
+        
         todo = {"extra": "extra"}
         response = self.client.put('/api/v1/todos/1', json=todo)
         self.assertEqual(response.status_code, 400)
